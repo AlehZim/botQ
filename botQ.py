@@ -7,7 +7,24 @@ bot = telebot.TeleBot(TOKEN)
 row = ['1', '2','3','4','5','6','7','8','9','10']
 row2 = ['1.', '2.', '3.', '4.', '5.']
 row3 = ['no_0', 'yes_10', 'yes_30']
+ninth1 = 'быстрые способы справиться с гневом'
+ninth2 = 'техники релаксации с визуальным/аудио/видео сопровождением'
+ninth3 = 'техники профилактики гнева'
+ninth4 = 'возможность отслеживать свой прогресс и статистику'
+ninth5 = 'свой вариант'
+ninth = [ninth1, ninth2, ninth3, ninth4, ninth5]
 
+def get_answer(data):
+    if data == '9.1':
+        return ninth1
+    if data == '9.2':
+        return ninth2
+    if data == '9.3':
+        return ninth3
+    if data == '9.4':
+        return ninth4
+    if data == '9.5':
+        return ninth5
 
 def read_info(message, text,  question):
     user_id = ''
@@ -21,12 +38,11 @@ def read_info(message, text,  question):
 
 @bot.message_handler(commands=['start'])
 def helper(message):
-    text = ''' Добрый день, мы команда специалистов, которая планирует разработать мобильное решение, 
-которое будет наполнено инструментами, позволяющими справиться со сложными эмоциями, который порой у 
-нас возникают во взаимоотношениях с близкими людьми, прежде всего с гневом. Мы можем кричать, ругаться, 
-ломать предметы и вести себя агрессивно, что обижает и расстраивает в последствии и нас, и наших близких.
-Нам очень поможет ваше мнение и ожидания от подобного решения. Пожалуйста, найдите 15 минут времени и 
-заполните небольшой конфиденциальный опросник ниже. Нажмите /poll . Спасибо вам за помощь!
+    text = ''' Мы команда специалистов, которая разрабатывает мобильный продукт, помогающий справиться со сложными эмоциями, прежде всего с гневом.
+Пожалуйста, пройдите опрос, расположенный ниже.
+Это займет около 1 минуты.
+Ваше мнение очень важно для нас.
+Чтобы начать опрос нажмите /poll 
 '''
     with_name = message.from_user.first_name + ', ' + text
     bot.reply_to(message, with_name)
@@ -115,7 +131,7 @@ def get_sixth(message):
         #bot.register_next_step_handler(message, get_seventh)
 
 def get_seventh(message):
-    seventh = '''7.Нужно ли вам время от времени такое приложение? Было бы оно полезно? Оцените по 5-ти балльной шкале, где 5 - безусловно пригодилось бы, а 0 - это бесполезная идея, я и сам могу справиться со своими чувствами.'''
+    seventh = '''7.Нужно ли вам время от времени такое приложение? Было бы оно полезно? Оцените по 5-ти балльной шкале, где 5 - безусловно пригодилось бы, а 1 - это бесполезная идея, я и сам могу справиться со своими чувствами.'''
     question = '6'
     keyboard = types.InlineKeyboardMarkup()
     a = types.InlineKeyboardButton(text='1', callback_data='1.')
@@ -131,9 +147,7 @@ def get_seventh(message):
 
 
 def get_еighth(message):
-    еighth='''8.Есть ли уже у в вашем арсенале приложения, которые помогают вам расслабиться в момент, 
-когда вы испытываете сложные эмоции? 
-Что это за приложения? Что в них вам помогает? Опишите, пожалуйста, коротко.'''
+    еighth='''8.Как бы вы поняли, что вам нужно скачать такое приложение?'''
     question = '7'
     #keyboard = types.InlineKeyboardMarkup()
     #еighth_btn = types.InlineKeyboardButton(text='Пропустить', callback_data='еighth')
@@ -141,6 +155,10 @@ def get_еighth(message):
     bot.send_message(message.chat.id, еighth)
     bot.register_next_step_handler(message, get_ninth)
 
+def get_ninth_text(message):
+    ninth = '''9.Что бы вы хотели видеть в таком приложении? Напишите свой вариант '''
+    bot.send_message(message.chat.id, ninth)
+    bot.register_next_step_handler(message, get_tenth_1)
 
 @bot.message_handler(commands=['Question9'])
 def get_ninth(message):
@@ -148,17 +166,37 @@ def get_ninth(message):
     read_info(message, message.text, question)
     ninth = '''9.Что бы вы хотели видеть в таком приложении? 
 Напишите, пожалуйста, ваши идеи и рекомендации.'''
-    #keyboard = types.InlineKeyboardMarkup()
-    #ninth_btn = types.InlineKeyboardButton(text='Пропустить', callback_data='ninth')
-    #keyboard.add(ninth_btn)
-    bot.send_message(message.chat.id, ninth)
-    bot.register_next_step_handler(message, get_tenth)
+    keyboard = types.InlineKeyboardMarkup()
+    ninth1_btn = types.InlineKeyboardButton(text='Быстрые способы справиться с гневом', callback_data='9.1')
+    ninth2_btn = types.InlineKeyboardButton(text='Ттехники релаксации с визуальным/аудио/видео сопровождением', callback_data='9.2')
+    ninth3_btn = types.InlineKeyboardButton(text='Техники профилактики гнева', callback_data='9.3')
+    ninth4_btn = types.InlineKeyboardButton(text='Возможность отслеживать свой прогресс и статистику', callback_data='9.4')
+    ninth5_btn = types.InlineKeyboardButton(text='Свой вариант ', callback_data='свой вариант')
+    keyboard.row(ninth1_btn)
+    keyboard.row(ninth2_btn)
+    keyboard.row(ninth3_btn)
+    keyboard.row(ninth4_btn)
+    keyboard.row(ninth5_btn)
+    bot.send_message(message.chat.id, ninth, reply_markup=keyboard)
+    #bot.register_next_step_handler(message, get_tenth)
 
+def get_tenth_1(message):
+    tenth = '10.Готовы ли вы оформить подписку на такое мобильное приложение, когда оно будет готово?'
+    question = '9'
+    read_info(message, message.text, question)
+    keyboard = types.InlineKeyboardMarkup()
+    no_0 = types.InlineKeyboardButton(text='Нет', callback_data='no_0')
+    yes_10 = types.InlineKeyboardButton(text='Да, но до 10$ в месяц', callback_data='yes_10')
+    yes_30 = types.InlineKeyboardButton(text='Я бы и более 30$ платил, если полезно', callback_data='yes_30')
+    keyboard.row(no_0)
+    keyboard.row(yes_10)
+    keyboard.row(yes_30)
+    bot.send_message(message.chat.id, tenth, reply_markup=keyboard)
 
 def get_tenth(message):
     tenth = '10.Готовы ли вы оформить подписку на такое мобильное приложение, когда оно будет готово?'
     question = '9'
-    read_info(message, message.text, question)
+    #read_info(message, message.text, question)
     keyboard = types.InlineKeyboardMarkup()
     no_0 = types.InlineKeyboardButton(text='Нет', callback_data='no_0')
     yes_10 = types.InlineKeyboardButton(text='Да, но до 10$ в месяц', callback_data='yes_10')
@@ -249,6 +287,15 @@ def callback_worker(call):
         read_info(call.message, call.data, question)
         #bot.send_message(call.message.chat.id, call.data)
         get_еighth(call.message)
+    if call.data[0:2] == '9.':
+        question = '9'
+        data = get_answer(call.data)
+        read_info(call.message, data, question)
+        get_tenth(call.message)
+    if call.data == 'свой вариант':
+        question = '9'
+        read_info(call.message, call.data, question)
+        get_ninth_text(call.message)
     if call.data in row3:
         question = '10'
         read_info(call.message, call.data, question)
