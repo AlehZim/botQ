@@ -168,9 +168,9 @@ def get_ninth(message):
 Напишите, пожалуйста, ваши идеи и рекомендации.'''
     keyboard = types.InlineKeyboardMarkup()
     ninth1_btn = types.InlineKeyboardButton(text='Быстрые способы справиться с гневом', callback_data='9.1')
-    ninth2_btn = types.InlineKeyboardButton(text='Ттехники релаксации с визуальным/аудио/видео сопровождением', callback_data='9.2')
+    ninth2_btn = types.InlineKeyboardButton(text='Техники релаксации', callback_data='9.2')
     ninth3_btn = types.InlineKeyboardButton(text='Техники профилактики гнева', callback_data='9.3')
-    ninth4_btn = types.InlineKeyboardButton(text='Возможность отслеживать свой прогресс и статистику', callback_data='9.4')
+    ninth4_btn = types.InlineKeyboardButton(text='Oтслеживание прогресса', callback_data='9.4')
     ninth5_btn = types.InlineKeyboardButton(text='Свой вариант ', callback_data='свой вариант')
     keyboard.row(ninth1_btn)
     keyboard.row(ninth2_btn)
